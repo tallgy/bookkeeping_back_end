@@ -1,32 +1,25 @@
-const http = require('http');
-
-import { addBookkeeping } from './controller/bookkeeping/bookkeeping'
-import { getStatistics } from './controller/statistics/statistics'
-
-const server = http.createServer();
-
-const urlObj = {
-  '/statistics/getInfo': addBookkeeping,
-  '/bookkeeping/add': getStatistics
-};
-
-function switchUrl(url) {
-  return urlObj[url];
-}
+const express = require('express')
+const router = require('./router')
+const app = express()
 
 
+app.listen(3000, function () {
+  console.log('app is running at port 3000.');
+})
 
+app.all('/*', function (req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type,X-Requested-With");
 
+  console.log(req.method)
+  next();
+})
 
+app.use(router);
 
-server.on('request', function (request, response) {
-  const requestUrl = request.url;
-  console.log(switchUrl(requestUrl));
-  console.log('--------');
-
-  response.end();
-});
-
-server.listen(3000, function () {
-  console.log('--- begin---');
+app.use(function (req, res) {
+  // 所有未处理的请求路径都会跑到这里
+  // 404
+  console.log('404')
+  res.send();
 })
