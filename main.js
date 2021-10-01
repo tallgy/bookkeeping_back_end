@@ -1,6 +1,13 @@
 const express = require('express')
+const bodyParser = require('body-parser');
 const router = require('./router')
 const app = express()
+
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+// parse application/json
+app.use(bodyParser.json());
 
 
 app.listen(3000, function () {
@@ -11,7 +18,6 @@ app.all('/*', function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type,X-Requested-With");
 
-  console.log(req.method)
   next();
 })
 
