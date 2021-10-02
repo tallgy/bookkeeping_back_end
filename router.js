@@ -14,9 +14,21 @@ router.get(path.getStatistics, function(req, res) {
   //会返回一个json的数据，包含了收入和支出
   //msg is json
   networkController.statistics().then(result => {
+
+    const data = {
+      data1: result[0] && {
+        type: result[0].type,
+        money: result[0].money
+      },
+      data2: result[1] && {
+        type: result[1].type,
+        money: result[1].money
+      }
+    };
+
     res.json({
       stateCode: 200,
-      data: result.money
+      data: data
     })
   }, err => {
 
